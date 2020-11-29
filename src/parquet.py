@@ -7,6 +7,7 @@ OUTPUT_FILE_PATH = 'output/accidents.parquet'
 
 
 def evaluate_compression(df):
+    print('Evaluating parquet compression')
     table = pa.Table.from_pandas(df)
 
     start = timer()
