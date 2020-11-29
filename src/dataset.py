@@ -1,6 +1,5 @@
 # Imported from https://github.com/niczky12/medium/blob/master/tech/bigquery/benchmarks/file_loads.py
 
-import datetime
 import pandas as pd
 from hashlib import sha1
 from sklearn import datasets
@@ -8,10 +7,6 @@ from sklearn import datasets
 
 def make_int(x: int) -> int:
     return int(x * 100_000)
-
-
-def make_datetime(x: int) -> datetime.datetime:
-    return datetime.datetime.fromtimestamp(abs(make_int(x)))
 
 
 def make_string(x: int) -> str:
@@ -30,7 +25,6 @@ def make_random_dataset(
     rows: int,
     float_cols: int = 1,
     int_cols: int = 1,
-    datetime_cols: int = 1,
     string_cols: int = 1,
     char_cols: int = 1,
 ) -> pd.DataFrame:
@@ -38,7 +32,6 @@ def make_random_dataset(
     functions = [
         lambda x: x,
         make_int,
-        make_datetime,
         make_string,
         make_char,
     ]
@@ -46,7 +39,6 @@ def make_random_dataset(
     quantities = [
         float_cols,
         int_cols,
-        datetime_cols,
         string_cols,
         char_cols,
     ]
