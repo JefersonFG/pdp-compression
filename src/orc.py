@@ -2,7 +2,7 @@ import pyorc
 from timeit import default_timer as timer
 import src.util as util
 
-OUTPUT_FILE_PATH = 'output/accidents.orc'
+OUTPUT_FILE_PATH = 'output/output.orc'
 
 
 def generate_schema(col_list, float_cols, int_cols, string_cols, char_cols):
@@ -33,14 +33,18 @@ def generate_schema(col_list, float_cols, int_cols, string_cols, char_cols):
 
 def evaluate_compression(df, schema):
     print("Evaluating orc compression")
+    # NONE, ZLIB
+    write_with_compression(df, schema, pyorc.CompressionKind.NONE)
+    write_with_compression(df, schema, pyorc.CompressionKind.ZLIB)
 
+
+def write_with_compression(df, schema, compression):
     with open(OUTPUT_FILE_PATH, "wb") as f:
-        # NONE, ZLIB
-        with pyorc.Writer(f, schema, compression=pyorc.CompressionKind.NONE,
+        with pyorc.Writer(f, schema, compression=compression,
                           compression_strategy=pyorc.CompressionStrategy.COMPRESSION) as writer:
             start = timer()
             for i in range(len(df)):
                 writer.write(tuple([x for x in df.iloc[i, :]]))
     end = timer()
-    print('Time to write orc: {} seconds'.format(end - start))
+    print('Time to write orc with {} compression: {} seconds'.format(compression, end - start))
     print('Resulting size: {}'.format(util.get_readable_file_size(OUTPUT_FILE_PATH)))
