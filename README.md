@@ -9,7 +9,6 @@ The program depends on the following python modules:
 * pyarrow
 * pyorc
 * pandavro
-* fastavro
 * sklearn
 * pandas
 
